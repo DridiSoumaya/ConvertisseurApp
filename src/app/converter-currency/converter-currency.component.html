@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>
+                <span>Convertisseur de devises</span>
+            </h1>
+            <div class="row">
+                <div class="form-group col-md-6" [formGroup]="currencyForm">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect01">Choisir une devise</label>
+                        <select class="col-md-3 form-select" formControlName="currencyControl" id="inputGroupSelect01"
+                            (change)="onChange($event)">
+                            <option [value]="currency" *ngFor="let currency of ListCurrency">{{currency}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-md-6" [formGroup]="currencyForm">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect01">Fix Taux de change</label>
+                        <input class="col-md-3" name="tauxChange" type="number" id="taux" formControlName="tauxChange" [(ngModel)]="tauxChange"
+                            (change)="onChangeTaux($event)" class="form-control" placeholder="0.0" />
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div class="row" [hidden]="!isEUR">
+                <label for="labelCurrency" class="col-sm-3 col-form-label text-bold">{{this.labelCurrency}}</label>
+                <div class="col-sm-9 pb-3" [formGroup]="currencyForm">
+                    <input [(ngModel)]="montant" name="montant" type="number" id="montant" formControlName="montant"
+                        class="form-control"  (change)="onChangeCurrency($event)" />
+                </div>
+                <hr />
+                <label for="SecondlabelCurrency" class="col-sm-3 col-form-label">{{this.SecondlabelCurrency}}</label>
+                <div class="col-md-9">
+                    <!-- <input [ngModel]="montant | euroToUsd" 
+                    (ngModelChange)="montant=$event" name="montant" type="number" id="montant" class="form-control" /> -->
+                    <span  #mySpan> {{montant | usdToEuro}} </span>
+                </div>
+            </div>
+            <div class="row" [hidden]="!isUsd">
+                <label for="labelCurrency" class="col-sm-3 col-form-label ">{{this.labelCurrency}}</label>
+                <div class="col-sm-9 pb-3" [formGroup]="currencyForm">
+                    <input [(ngModel)]="currencyVal" name="currencyVal" type="number" id="currencyVal"
+                        class="form-control" formControlName="currencyVal" value="currencyVal"  (change)="onChangeCurrency($event)" />
+                </div>
+                <hr />
+                <label for="SecondlabelCurrency" class="col-sm-3 col-form-label">{{this.SecondlabelCurrency}}</label>
+                <div class="col-md-9">
+
+                    <span> {{currencyVal | usdToEuro}} </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h1>
+                <span>Tableau de transaction</span>
+            </h1>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Taux réel</th>
+                        <th scope="col">Taux saisi</th>
+                        <th scope="col">Devise initiale</th>
+                        <th scope="col">Valeur initiale</th>
+                        <th scope="col">Devise associée</th>
+                        <th scope="col">Valeur calculée</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of CurrencyList.slice(2,7)">
+                    <td>{{item.taux}} </td>
+                    <td>{{item.tauxChange}} </td>
+                    <td>{{item.currencyControl}}</td>
+                    <td>{{item.montant}} </td>
+                    <td><span *ngIf="item.currencyControl == 'EUR'">
+                            USD
+                        </span>
+                        <span *ngIf="item.currencyControl != 'EUR'">
+                            EUR
+                        </span>
+                    </td>
+                    <td> {{item.currencyVal}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
